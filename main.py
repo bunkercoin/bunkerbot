@@ -1,3 +1,5 @@
+from multiprocessing import AuthenticationError
+from ssl import CHANNEL_BINDING_TYPES
 import requests
 import discord
 from discord.ext import commands
@@ -43,8 +45,19 @@ async def bunkerinfo(ctx):
 # snipe comamnd, used to see the last deleted message
 @bot.event
 async def on_message_delete(message):
-    msg = str(message.author)+ ' deleted a message in '+str(message.channel)+': '+str(message.content)
-    print(msg)
+    global author
+    author = str(message.author)
+    global channel 
+    channel = str(message.channel)
+    global msg
+    msg = str(message.content)
+    
+@bot.command()
+async def snipe(ctx):
+    embed=discord.Embed(title="Sniped message", description="from " + channel, color=0x99c1f1)
+    embed.add_field(name=msg, value="Message from " + author, inline=False)
+    embed.set_footer(text="cry about it")
+    await ctx.send(embed=embed)
 
 
 
