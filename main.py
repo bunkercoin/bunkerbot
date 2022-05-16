@@ -4,7 +4,7 @@ from discord.ext import commands
 
 # 'Settings'
 api = "https://api.bunkercoin.xyz"
-token = 'ODM2NjIzMjQ4Njc0MTI3OTIz.GppQvL.PjQpwRPBKm0uTyl1Po07SDRu0J81c0htCNtmeY'
+token = ''
 
 bot = commands.Bot(command_prefix='>')
 
