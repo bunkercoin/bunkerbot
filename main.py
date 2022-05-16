@@ -4,7 +4,7 @@ from discord.ext import commands
 
 # 'Settings'
 api = "https://api.bunkercoin.xyz"
-token = ''
+token = '' # Message to self: DELETE THIS WHEN COMMITING!!
 
 bot = commands.Bot(command_prefix='>')
 
@@ -39,6 +39,14 @@ async def bunkerinfo(ctx):
     embed.add_field(name="Bunkercoin network hashrate", value=bkcnetworkhashrate() + " H/s", inline=False)
     embed.add_field(name="Bunkercoin difficulty", value=bkcdifficulty(), inline=False)
     await ctx.send(embed=embed)
+
+# snipe comamnd, used to see the last deleted message
+@bot.event
+async def on_message_delete(message):
+    msg = str(message.author)+ ' deleted a message in '+str(message.channel)+': '+str(message.content)
+    print(msg)
+
+
 
 # Start the bot
 bot.run(token)
