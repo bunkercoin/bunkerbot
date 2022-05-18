@@ -1,5 +1,3 @@
-from multiprocessing import AuthenticationError
-from ssl import CHANNEL_BINDING_TYPES
 import requests
 import discord
 from discord.ext import commands
