@@ -1,12 +1,30 @@
+import logging
 import requests
 import discord
 from discord.ext import commands
+
+# Logging
+logger = logging.getLogger('discord')
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(handler)
 
 # 'Settings'
 api = "https://api.bunkercoin.xyz"
 token = '' # Message to self: DELETE THIS WHEN COMMITING!!
 
 bot = commands.Bot(command_prefix='>')
+
+# Error handling
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send('Command not found. Type `>help` for a list of commands.')
+    elif isinstance(error, commands.CommandInvokeError):
+        await ctx.send('If you got this error it probably means that there is nothing to snipe. Try again later.')
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send('You do not have permission to use this command.')
 
 # Get blockcount from the api
 def bkcblockcount():
@@ -76,6 +94,13 @@ async def leave(ctx):
     else:
         server = ctx.message.guild.voice_client
         await server.disconnect()
+
+# ban command, allows only administrators to ban users
+@bot.command()
+@commands.has_permissions(ban_members=True)
+async def ban(ctx, member: discord.Member, *, reason=None):
+    await member.ban(reason=reason)
+    await ctx.send(f'Banned {member.mention}')
 
 # Start the bot
 bot.run(token)
