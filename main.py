@@ -59,7 +59,25 @@ async def snipe(ctx):
     embed.set_footer(text="cry about it")
     await ctx.send(embed=embed)
 
+# >music command, play "troll.mp3" in a voice channel
+@bot.command()
+async def music(ctx):
+    voice_channel = ctx.author.voice.channel
+    if voice_channel is None:
+        await ctx.send("You need to be in a voice channel to use this command")
+    else:
+        voice_client = await voice_channel.connect()
+        voice_client.play(discord.FFmpegPCMAudio("troll.mp3"))
 
+# Make the bot leave the voice channel
+@bot.command()
+async def leave(ctx):
+    voice_channel = ctx.author.voice.channel
+    if voice_channel is None:
+        await ctx.send("You need to be in a voice channel to use this command")
+    else:
+        server = ctx.message.guild.voice_client
+        await server.disconnect()
 
 # Start the bot
 bot.run(token)
